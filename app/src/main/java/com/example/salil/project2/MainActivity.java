@@ -3,7 +3,6 @@ package com.example.salil.project2;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
@@ -12,19 +11,15 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
-
 import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfKeyPoint;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.features2d.FeatureDetector;
-import org.opencv.features2d.Features2d;
 import org.opencv.imgproc.Imgproc;
 
 public class MainActivity extends AppCompatActivity implements OnTouchListener, CvCameraViewListener2 {
@@ -43,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS:
                 {
-                    //Log.i(TAG, "OpenCV loaded successfully");
                     mOpenCvCameraView.enableView();
                     mOpenCvCameraView.setOnTouchListener(MainActivity.this);
                 } break;
@@ -130,10 +124,8 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener, 
         int pointCount = touchedRect.width * touchedRect.height;
         for(int i = 0; i < mBlobColorHsv.val.length; i++)
             mBlobColorHsv.val[i] /= pointCount;
-
         mBlobColorRgba = convertScalarHsv2Rgba(mBlobColorHsv);
-
-        //touch_color.setText("Color: #" + String.format("%O2X", (int)mBlobColorRgba.val[0]) + String.format("%O2X", (int)mBlobColorRgba.val[1]) + String.format("%O2X", (int)mBlobColorRgba.val[2]));
+        touch_color.setText("Color: #" + String.format("%02X", (int)mBlobColorRgba.val[0]) + String.format("%02X", (int)mBlobColorRgba.val[1]) + String.format("%02X", (int)mBlobColorRgba.val[2]));
 
         touch_color.setTextColor(Color.rgb((int)mBlobColorRgba.val[0],(int)mBlobColorRgba.val[1],
                 (int)mBlobColorRgba.val[2]));

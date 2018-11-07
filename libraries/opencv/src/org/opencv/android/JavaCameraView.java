@@ -174,6 +174,7 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
                     }
 
                     params.setPreviewFormat(ImageFormat.NV21);
+
                     if(Build.BRAND.equalsIgnoreCase("android")) {
                         params.setPreviewFormat(ImageFormat.YV12);
                     }
@@ -324,12 +325,13 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
 
         @Override
         public Mat rgba() {
-            if (previewFormat == ImageFormat.NV21) {
+            if (mPreviewFormat == ImageFormat.NV21)
                 Imgproc.cvtColor(mYuvFrameData, mRgba, Imgproc.COLOR_YUV2RGBA_NV21, 4);
-            }
-            else if (previewFormat == ImageFormat.YV12) {
+            else if (mPreviewFormat == ImageFormat.YV12)
                 Imgproc.cvtColor(mYuvFrameData, mRgba, Imgproc.COLOR_YUV2RGB_I420, 4);  // COLOR_YUV2RGBA_YV12 produces inverted colors
-            }
+            else
+                throw new IllegalArgumentException("Preview Format can be NV21 or YV12");
+
             return mRgba;
         }
 
