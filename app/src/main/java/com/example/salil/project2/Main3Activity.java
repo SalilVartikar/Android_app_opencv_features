@@ -18,14 +18,11 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfKeyPoint;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.features2d.FeatureDetector;
-import org.opencv.features2d.Features2d;
 import org.opencv.imgproc.Imgproc;
 
-public class Main2Activity extends AppCompatActivity implements OnTouchListener, CvCameraViewListener2 {
+public class Main3Activity extends AppCompatActivity implements OnTouchListener, CvCameraViewListener2 {
     private CameraBridgeViewBase mOpenCvCameraView;
 
     private Mat mRGBA;
@@ -43,7 +40,7 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
                 case LoaderCallbackInterface.SUCCESS:
                 {
                     mOpenCvCameraView.enableView();
-                    mOpenCvCameraView.setOnTouchListener(Main2Activity.this);
+                    mOpenCvCameraView.setOnTouchListener(Main3Activity.this);
                 } break;
                 default:
                 {
@@ -53,10 +50,11 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main3);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         touch_coordinates = (TextView) findViewById(R.id.touch_coordinates);
         touch_color = (TextView) findViewById(R.id.touch_color);
@@ -169,31 +167,6 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         mRGBA = inputFrame.rgba();
         int choice = getIntent().getIntExtra("Choice", 0);
-        switch(choice) {
-            case 1: return mRGBA;
-
-            case 2:
-                try {
-                    mRGBA.convertTo(mRGBA, -1, 1, 50);
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
-                break;
-
-            case 3:
-                Imgproc.cvtColor(mRGBA, mRGBA, Imgproc.COLOR_RGBA2RGB);
-                MatOfKeyPoint keypoints = new MatOfKeyPoint();
-                FeatureDetector detector = FeatureDetector.create(FeatureDetector.FAST);
-                detector.detect(mRGBA, keypoints);
-                Features2d.drawKeypoints(mRGBA, keypoints, mRGBA);
-                break;
-
-            case 4:
-                Mat mGrey = new Mat(mRGBA.size(), CvType.CV_8UC1);
-                Imgproc.cvtColor(mRGBA, mGrey, Imgproc.COLOR_RGBA2GRAY);
-                Imgproc.Canny(mGrey, mRGBA, 50,150);
-                break;
-            }
         return mRGBA;
     }
 }

@@ -5,6 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
+    <View android:id="@+id/strut"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"/>
+
     <Button
         android:id="@+id/Normal"
         android:layout_width="wrap_content"
@@ -23,4 +28,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:text="Keypoints" />
+    <Button
+        android:id="@+id/Canny"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/strut"
+        android:text="Canny" />
+    <Button
+        android:id="@+id/Activity3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/strut"
+        android:text="Activity3" />
+    
 </RelativeLayout>

@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
         Button normal = (Button) findViewById(R.id.Normal);
         Button brighness = (Button) findViewById(R.id.Brightness);
         Button keypoints = (Button) findViewById(R.id.Keypoints);
+        Button canny = (Button) findViewById(R.id.Canny);
+        Button activity3 = (Button) findViewById(R.id.Activity3);
 
         // Capture button clicks
         normal.setOnClickListener(new View.OnClickListener() {
@@ -47,6 +48,28 @@ public class MainActivity extends AppCompatActivity {
                 Intent myIntent = new Intent(MainActivity.this,
                         Main2Activity.class);
                 myIntent.putExtra("Choice", 3);
+                startActivity(myIntent);
+            }
+        });
+
+        canny.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+
+                // Start NewActivity.class
+                Intent myIntent = new Intent(MainActivity.this,
+                        Main2Activity.class);
+                myIntent.putExtra("Choice", 4);
+                startActivity(myIntent);
+            }
+        });
+
+        activity3.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+
+                // Start NewActivity.class
+                Intent myIntent = new Intent(MainActivity.this,
+                        Main3Activity.class);
+                myIntent.putExtra("Choice", 5);
                 startActivity(myIntent);
             }
         });

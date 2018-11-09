@@ -3,13 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
+    <View android:id="@+id/strut"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"/>
 
     <org.opencv.android.JavaCameraView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentRight="true"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/strut"
         android:layout_alignParentLeft="true"
-        android:id="@+id/cam1"/>
+        android:id="@+id/img1"/>
+    <org.opencv.android.JavaCameraView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/strut"
+        android:layout_alignParentRight="true"
+        android:id="@+id/img2"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,5 +34,4 @@
         android:text="Color: "
         android:textColor="#D0171F"
         android:id="@+id/touch_color"/>
-
 </RelativeLayout>

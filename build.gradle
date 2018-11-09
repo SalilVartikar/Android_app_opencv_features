@@ -14,7 +14,7 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
-
+//configurations.all {exclude group: 'org.opencv.android', module: 'AsyncServiceHelper'}
 allprojects {
     repositories {
         google()
