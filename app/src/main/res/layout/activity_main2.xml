@@ -25,4 +25,11 @@
         android:textColor="#D0171F"
         android:id="@+id/touch_color"/>
 
+    <Button
+        android:id="@+id/Normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="Normal" />
+
 </RelativeLayout>
