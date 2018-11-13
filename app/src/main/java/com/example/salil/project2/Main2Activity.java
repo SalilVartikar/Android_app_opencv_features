@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
@@ -32,19 +31,13 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
-import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO;
 
 public class Main2Activity extends AppCompatActivity implements OnTouchListener, CvCameraViewListener2 {
     private CameraBridgeViewBase mOpenCvCameraView;
 
     public Mat mRGBA;
+    public Mat mNormal;
+    public int choice = 1;
     TextView touch_coordinates;
     TextView touch_color;
     double x = -1;
@@ -78,36 +71,64 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
         touch_color = (TextView) findViewById(R.id.touch_color);
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.cam1);
 
-        mOpenCvCameraView.setCameraIndex(1);
+        int camChoice = getIntent().getIntExtra("camChoice", 0);
+        mOpenCvCameraView.setCameraIndex(camChoice);
 
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
 
         Button normal = (Button) findViewById(R.id.Normal);
+        Button brightness = (Button) findViewById(R.id.Brightness);
+        Button keypoints = (Button) findViewById(R.id.Keypoints);
+        Button canny = (Button) findViewById(R.id.Canny);
+        Button capture = (Button) findViewById(R.id.Capture);
 
-        normal.setOnClickListener(new View.OnClickListener() {
+        capture.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                Mat m = new Mat();
+                Mat m1 = new Mat();
 
                 // Start NewActivity.class
                 Intent myIntent = new Intent(Main2Activity.this,
                         Main3Activity.class);
 
-                Imgproc.cvtColor(mRGBA, m, Imgproc.COLOR_RGBA2BGR, 3);
+                if(choice != 1) {
+                    Toast.makeText(getApplicationContext(), "Capture only in Normal mode", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Imgproc.cvtColor(mNormal, m1, Imgproc.COLOR_RGBA2BGR, 3);
+                    File path = new File(Environment.getExternalStorageDirectory() + "/Images/");
+                    path.mkdirs();
+                    File file = new File(path, "image.jpg");
 
-                File path = new File(Environment.getExternalStorageDirectory() + "/Images/");
-                path.mkdirs();
-                File file = new File(path, "image.jpg");
+                    String filename = file.toString();
+                    Boolean bool = Imgcodecs.imwrite(filename, m1);
 
-                String filename = file.toString();
-                Boolean bool = Imgcodecs.imwrite(filename, m);
+                    startActivity(myIntent);
+                }
+            }
+        });
 
-                if (!bool)
-                    Toast.makeText(getApplicationContext(), "FAILED", Toast.LENGTH_LONG).show();
+        normal.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                choice = 1;
+            }
+        });
 
-                long addr = mRGBA.getNativeObjAddr();
-                myIntent.putExtra("Address", addr);
-                startActivity(myIntent);
+        brightness.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                choice = 2;
+            }
+        });
+
+        keypoints.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                choice = 3;
+            }
+        });
+
+        canny.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                choice = 4;
             }
         });
     }
@@ -139,53 +160,59 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        int cols = mRGBA.cols();
-        int rows = mRGBA.rows();
 
-        double yLow = (double) mOpenCvCameraView.getHeight()*0.2401961;
-        double yHigh = (double) mOpenCvCameraView.getHeight()*0.7696078;
-        double xScale = (double)rows/(double)mOpenCvCameraView.getWidth();
-        double yScale = (double)rows/(yHigh - yLow);
+        if(choice == 1) {
+            int cols = mRGBA.cols();
+            int rows = mRGBA.rows();
 
-        x = event.getX();
-        y = event.getY();
+            double yLow = (double) mOpenCvCameraView.getHeight() * 0.2401961;
+            double yHigh = (double) mOpenCvCameraView.getHeight() * 0.7696078;
+            double xScale = (double) rows / (double) mOpenCvCameraView.getWidth();
+            double yScale = (double) rows / (yHigh - yLow);
 
-        y = y - yLow;
-        x = x * xScale;
-        y = y * yScale;
+            x = event.getX();
+            y = event.getY();
 
-        if((x < 0) || (y < 0) || (x > cols) || (y > rows))
-            return false;
+            y = y - yLow;
+            x = x * xScale;
+            y = y * yScale;
 
-        touch_coordinates.setText("X: " + Double.valueOf(x) + ", Y: " + Double.valueOf(y));
+            if ((x < 0) || (y < 0) || (x > cols) || (y > rows))
+                return false;
 
-        Rect touchedRect = new Rect();
+            touch_coordinates.setText("X: " + Double.valueOf(x) + ", Y: " + Double.valueOf(y));
 
-        touchedRect.x = (int)x;
-        touchedRect.y = (int)y;
+            Rect touchedRect = new Rect();
 
-        touchedRect.width = 8;
-        touchedRect.height = 8;
+            touchedRect.x = (int) x;
+            touchedRect.y = (int) y;
 
-        Mat touchedRegionRgba = mRGBA.submat(touchedRect);
+            touchedRect.width = 8;
+            touchedRect.height = 8;
 
-        Mat touchedRegionHsv = new Mat();
-        Imgproc.cvtColor(touchedRegionRgba, touchedRegionHsv, Imgproc.COLOR_RGB2HSV_FULL);
-        //Imgproc.cvtColor(touchedRegionRgba, touchedRegionHsv, Imgproc.COLOR_RGB2HSV_FULL);
+            Mat touchedRegionRgba = mRGBA.submat(touchedRect);
 
-        mBlobColorHsv = Core.sumElems(touchedRegionHsv);
-        int pointCount = touchedRect.width * touchedRect.height;
-        for(int i = 0; i < mBlobColorHsv.val.length; i++)
-            mBlobColorHsv.val[i] /= pointCount;
-        mBlobColorRgba = convertScalarHsv2Rgba(mBlobColorHsv);
-        touch_color.setText("Color: #" + String.format("%02X", (int)mBlobColorRgba.val[0]) + String.format("%02X", (int)mBlobColorRgba.val[1]) + String.format("%02X", (int)mBlobColorRgba.val[2]));
+            Mat touchedRegionHsv = new Mat();
+            Imgproc.cvtColor(touchedRegionRgba, touchedRegionHsv, Imgproc.COLOR_RGB2HSV_FULL);
+            //Imgproc.cvtColor(touchedRegionRgba, touchedRegionHsv, Imgproc.COLOR_RGB2HSV_FULL);
 
-        touch_color.setTextColor(Color.rgb((int)mBlobColorRgba.val[0],(int)mBlobColorRgba.val[1],
-                (int)mBlobColorRgba.val[2]));
+            mBlobColorHsv = Core.sumElems(touchedRegionHsv);
+            int pointCount = touchedRect.width * touchedRect.height;
+            for (int i = 0; i < mBlobColorHsv.val.length; i++)
+                mBlobColorHsv.val[i] /= pointCount;
+            mBlobColorRgba = convertScalarHsv2Rgba(mBlobColorHsv);
+            touch_color.setText("Color: #" + String.format("%02X", (int) mBlobColorRgba.val[0]) + String.format("%02X", (int) mBlobColorRgba.val[1]) + String.format("%02X", (int) mBlobColorRgba.val[2]));
 
-        touch_coordinates.setTextColor(Color.rgb((int)mBlobColorRgba.val[0],(int)mBlobColorRgba.val[1],
-                (int)mBlobColorRgba.val[2]));
+            touch_color.setTextColor(Color.rgb((int) mBlobColorRgba.val[0], (int) mBlobColorRgba.val[1],
+                    (int) mBlobColorRgba.val[2]));
 
+            touch_coordinates.setTextColor(Color.rgb((int) mBlobColorRgba.val[0], (int) mBlobColorRgba.val[1],
+                    (int) mBlobColorRgba.val[2]));
+        }
+        else {
+            touch_color.setText("");
+            touch_coordinates.setText("");
+        }
         return false;
     }
 
@@ -212,7 +239,8 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         mRGBA = inputFrame.rgba();
-        int choice = getIntent().getIntExtra("Choice", 0);
+        mNormal = inputFrame.rgba();
+        //int choice = getIntent().getIntExtra("Choice", 0);
         switch(choice) {
             case 1:
                 return mRGBA;
@@ -240,38 +268,5 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
                 break;
         }
         return mRGBA;
-    }
-
-    private static File getOutputMediaFile(int type){
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
-
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "MyCameraApp");
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
-
-        // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
-                Log.d("MyCameraApp", "failed to create directory");
-                return null;
-            }
-        }
-
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File mediaFile;
-        if (type == MEDIA_TYPE_IMAGE){
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_"+ timeStamp + ".jpg");
-        } else if(type == MEDIA_TYPE_VIDEO) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "VID_"+ timeStamp + ".mp4");
-        } else {
-            return null;
-        }
-
-        return mediaFile;
     }
 }

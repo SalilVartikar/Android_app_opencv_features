@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/strut"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
+
         android:id="@+id/img1"/>
 
     <ImageView
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/strut"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
+
         android:id="@+id/img2"/>
 
     <View
@@ -48,5 +48,29 @@
         android:layout_alignBottom="@id/img2"
         android:layout_marginRight="200dp"
         android:id="@+id/text2"/>
+
+    <Button
+        android:id="@+id/Brightness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:text="Normal vs Bright" />
+
+    <Button
+        android:id="@+id/Keypoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:text="Fast vs Orb" />
+
+    <Button
+        android:id="@+id/Edge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="Edge" />
 
 </RelativeLayout>

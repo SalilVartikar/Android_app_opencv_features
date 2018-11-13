@@ -12,64 +12,89 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button normal = (Button) findViewById(R.id.Normal);
-        Button brighness = (Button) findViewById(R.id.Brightness);
-        Button keypoints = (Button) findViewById(R.id.Keypoints);
-        Button canny = (Button) findViewById(R.id.Canny);
-        Button activity3 = (Button) findViewById(R.id.Activity3);
+//        Button normal = (Button) findViewById(R.id.Normal);
+//        Button brighness = (Button) findViewById(R.id.Brightness);
+//        Button keypoints = (Button) findViewById(R.id.Keypoints);
+//        Button canny = (Button) findViewById(R.id.Canny);
+//        Button activity3 = (Button) findViewById(R.id.Activity3);
+
+        Button front = (Button) findViewById(R.id.Front);
+        Button back = (Button) findViewById(R.id.Back);
 
         // Capture button clicks
-        normal.setOnClickListener(new View.OnClickListener() {
+//        normal.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View arg0) {
+//
+//                // Start NewActivity.class
+//                Intent myIntent = new Intent(MainActivity.this,
+//                        Main2Activity.class);
+//                myIntent.putExtra("Choice", 1);
+//                startActivity(myIntent);
+//            }
+//        });
+//
+//        brighness.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View arg0) {
+//
+//                // Start NewActivity.class
+//                Intent myIntent = new Intent(MainActivity.this,
+//                        Main2Activity.class);
+//                myIntent.putExtra("Choice", 2);
+//                startActivity(myIntent);
+//            }
+//        });
+//
+//        keypoints.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View arg0) {
+//
+//                // Start NewActivity.class
+//                Intent myIntent = new Intent(MainActivity.this,
+//                        Main2Activity.class);
+//                myIntent.putExtra("Choice", 3);
+//                startActivity(myIntent);
+//            }
+//        });
+//
+//        canny.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View arg0) {
+//
+//                // Start NewActivity.class
+//                Intent myIntent = new Intent(MainActivity.this,
+//                        Main2Activity.class);
+//                myIntent.putExtra("Choice", 4);
+//                startActivity(myIntent);
+//            }
+//        });
+//
+//        activity3.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View arg0) {
+//
+//                // Start NewActivity.class
+//                Intent myIntent = new Intent(MainActivity.this,
+//                        Main3Activity.class);
+//                myIntent.putExtra("Choice", 5);
+//                startActivity(myIntent);
+//            }
+//        });
+
+        front.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
 
                 // Start NewActivity.class
                 Intent myIntent = new Intent(MainActivity.this,
                         Main2Activity.class);
-                myIntent.putExtra("Choice", 1);
+                myIntent.putExtra("camChoice", 1);
                 startActivity(myIntent);
             }
         });
 
-        brighness.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
 
                 // Start NewActivity.class
                 Intent myIntent = new Intent(MainActivity.this,
                         Main2Activity.class);
-                myIntent.putExtra("Choice", 2);
-                startActivity(myIntent);
-            }
-        });
-
-        keypoints.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
-
-                // Start NewActivity.class
-                Intent myIntent = new Intent(MainActivity.this,
-                        Main2Activity.class);
-                myIntent.putExtra("Choice", 3);
-                startActivity(myIntent);
-            }
-        });
-
-        canny.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
-
-                // Start NewActivity.class
-                Intent myIntent = new Intent(MainActivity.this,
-                        Main2Activity.class);
-                myIntent.putExtra("Choice", 4);
-                startActivity(myIntent);
-            }
-        });
-
-        activity3.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
-
-                // Start NewActivity.class
-                Intent myIntent = new Intent(MainActivity.this,
-                        Main3Activity.class);
-                myIntent.putExtra("Choice", 5);
+                myIntent.putExtra("camChoice", 0);
                 startActivity(myIntent);
             }
         });

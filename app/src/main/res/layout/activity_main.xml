@@ -11,35 +11,21 @@
         android:layout_centerHorizontal="true"/>
 
     <Button
-        android:id="@+id/Normal"
+        android:id="@+id/Front"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:text="Normal" />
+        android:layout_alignRight="@+id/strut"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:text="Front" />
+
     <Button
-        android:id="@+id/Brightness"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="Brightness" />
-    <Button
-        android:id="@+id/Keypoints"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="Keypoints" />
-    <Button
-        android:id="@+id/Canny"
+        android:id="@+id/Back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/strut"
-        android:text="Canny" />
-    <Button
-        android:id="@+id/Activity3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/strut"
-        android:text="Activity3" />
+        android:text="Back" />
     
 </RelativeLayout>

@@ -27,8 +27,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main2Activity" />
-        <activity android:name=".Main3Activity"></activity>
+        <activity android:name=".Main2Activity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".Main3Activity"
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>
