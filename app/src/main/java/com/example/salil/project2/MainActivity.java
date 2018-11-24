@@ -1,7 +1,11 @@
 package com.example.salil.project2;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -12,11 +16,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Button normal = (Button) findViewById(R.id.Normal);
-//        Button brighness = (Button) findViewById(R.id.Brightness);
-//        Button keypoints = (Button) findViewById(R.id.Keypoints);
-//        Button canny = (Button) findViewById(R.id.Canny);
-//        Button activity3 = (Button) findViewById(R.id.Activity3);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if(ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+                requestPermissions(new String[]{Manifest.permission.CAMERA},9);
+            }
+        }
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+//
+//        }
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+//
+//        }
 
         Button front = (Button) findViewById(R.id.Front);
         Button back = (Button) findViewById(R.id.Back);

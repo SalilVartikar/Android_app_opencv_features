@@ -1,5 +1,6 @@
 package com.example.salil.project2;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -23,27 +24,12 @@ import org.opencv.imgproc.Imgproc;
 
 import static org.opencv.core.CvType.CV_32F;
 
-public class Main3Activity extends AppCompatActivity {
+public class Main3Activity extends Main2Activity {
     ImageView iv1;
     ImageView iv2;
     TextView tv1;
     TextView tv2;
     public int compare;
-
-    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
-        @Override
-        public void onManagerConnected(int status) {
-            switch (status) {
-                case LoaderCallbackInterface.SUCCESS:
-                {
-                } break;
-                default:
-                {
-                    super.onManagerConnected(status);
-                } break;
-            }
-        }
-    };
 
 
     @Override
@@ -75,8 +61,9 @@ public class Main3Activity extends AppCompatActivity {
 
         edge.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                compare = 3;
-                displayImages();
+                Intent myInt = new Intent(Main3Activity.this,
+                        Main4Activity.class);
+                startActivity(myInt);
             }
         });
     }
@@ -84,12 +71,6 @@ public class Main3Activity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if(!OpenCVLoader.initDebug()) {
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_3_0, this, mLoaderCallback);
-        }
-        else {
-            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
-        }
     }
 
     public void displayImages() {
@@ -119,12 +100,7 @@ public class Main3Activity extends AppCompatActivity {
         }
 
         else if(compare == 2) {
-            Mat mFAST = new Mat();
-            Imgproc.cvtColor(m, mFAST, Imgproc.COLOR_RGBA2RGB);
-            MatOfKeyPoint keypoints = new MatOfKeyPoint();
-            FeatureDetector detector = FeatureDetector.create(FeatureDetector.FAST);
-            detector.detect(mFAST, keypoints);
-            Features2d.drawKeypoints(mFAST, keypoints, mFAST);
+            Mat mFAST = fastKp(m);
 
             Bitmap bmFAST = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(mFAST, bmFAST);
@@ -132,12 +108,7 @@ public class Main3Activity extends AppCompatActivity {
             tv1.setText("FAST");
 
 
-            Mat mORB = new Mat();
-            Imgproc.cvtColor(m, mORB, Imgproc.COLOR_RGBA2RGB);
-            MatOfKeyPoint keypoints1 = new MatOfKeyPoint();
-            FeatureDetector detector1 = FeatureDetector.create(FeatureDetector.ORB);
-            detector1.detect(mORB, keypoints1);
-            Features2d.drawKeypoints(mORB, keypoints1, mORB);
+            Mat mORB = orbKp(m);
             Bitmap bmORB = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(mORB, bmORB);
             iv2.setImageBitmap(bmORB);
@@ -145,14 +116,18 @@ public class Main3Activity extends AppCompatActivity {
         }
 
         else if(compare == 3) {
-            Bitmap bm = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(m, bm);
+//            Bitmap bm = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
+//            Utils.matToBitmap(m, bm);
+//            iv1.setImageBitmap(bm);
+//            tv1.setText("Normal");
+
+            Mat sobel = sobel(m);
+            Bitmap bm = Bitmap.createBitmap(sobel.cols(), sobel.rows(), Bitmap.Config.ARGB_8888);
+            Utils.matToBitmap(sobel, bm);
             iv1.setImageBitmap(bm);
             tv1.setText("Normal");
 
-            Mat mCanny = new Mat(m.size(), CvType.CV_8UC1);
-            Imgproc.cvtColor(m, mCanny, Imgproc.COLOR_RGBA2GRAY);
-            Imgproc.Canny(mCanny, mCanny, 50, 150);
+            Mat mCanny = canny(m);
             Bitmap bmCanny = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(mCanny, bmCanny);
             iv2.setImageBitmap(bmCanny);

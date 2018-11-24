@@ -1,9 +1,13 @@
 package com.example.salil.project2;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -66,6 +70,15 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},9);
+            }
+            if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},9);
+            }
+        }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         touch_coordinates = (TextView) findViewById(R.id.touch_coordinates);
         touch_color = (TextView) findViewById(R.id.touch_color);
@@ -254,19 +267,65 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
                 break;
 
             case 3:
-                Imgproc.cvtColor(mRGBA, mRGBA, Imgproc.COLOR_RGBA2RGB);
-                MatOfKeyPoint keypoints = new MatOfKeyPoint();
-                FeatureDetector detector = FeatureDetector.create(FeatureDetector.FAST);
-                detector.detect(mRGBA, keypoints);
-                Features2d.drawKeypoints(mRGBA, keypoints, mRGBA);
+                mRGBA = fastKp(mRGBA);
                 break;
 
             case 4:
-                Mat mGrey = new Mat(mRGBA.size(), CvType.CV_8UC1);
-                Imgproc.cvtColor(mRGBA, mGrey, Imgproc.COLOR_RGBA2GRAY);
-                Imgproc.Canny(mGrey, mRGBA, 50, 150);
+                mRGBA = canny(mRGBA);
                 break;
+
         }
         return mRGBA;
+    }
+
+    public Mat sobel(Mat m) {
+        Mat gray = new Mat();
+        Mat sobel = new Mat();
+        Mat x = new Mat();
+        Mat y = new Mat();
+        Mat absX = new Mat();
+        Mat absY = new Mat();
+
+        Imgproc.cvtColor(m, gray, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.Sobel(gray, x, CvType.CV_16S, 1, 0, 3, 1, 0);
+        Imgproc.Sobel(gray, y, CvType.CV_16S, 0, 1, 3, 1, 0);
+
+        Core.convertScaleAbs(x, absX);
+        Core.convertScaleAbs(y, absY);
+
+        Core.addWeighted(absX, 0.5, absY, 0.5, 1, sobel);
+
+        return sobel;
+    }
+
+    public Mat canny(Mat m) {
+        Mat canny = new Mat();
+        Mat mGrey = new Mat(m.size(), CvType.CV_8UC1);
+        Imgproc.cvtColor(m, mGrey, Imgproc.COLOR_RGBA2GRAY);
+        Imgproc.Canny(mGrey, canny, 50, 150);
+
+        return canny;
+    }
+
+    public Mat fastKp(Mat m) {
+        Mat fast = new Mat();
+        Imgproc.cvtColor(m, m, Imgproc.COLOR_RGBA2RGB);
+        MatOfKeyPoint keypoints = new MatOfKeyPoint();
+        FeatureDetector detector = FeatureDetector.create(FeatureDetector.FAST);
+        detector.detect(m, keypoints);
+        Features2d.drawKeypoints(m, keypoints, fast);
+
+        return fast;
+    }
+
+    public Mat orbKp(Mat m) {
+        Mat mORB = new Mat();
+        Imgproc.cvtColor(m, mORB, Imgproc.COLOR_RGBA2RGB);
+        MatOfKeyPoint keypoints1 = new MatOfKeyPoint();
+        FeatureDetector detector1 = FeatureDetector.create(FeatureDetector.ORB);
+        detector1.detect(mORB, keypoints1);
+        Features2d.drawKeypoints(mORB, keypoints1, mORB);
+
+        return mORB;
     }
 }
