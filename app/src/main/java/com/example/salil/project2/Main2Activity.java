@@ -207,7 +207,6 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
 
             Mat touchedRegionHsv = new Mat();
             Imgproc.cvtColor(touchedRegionRgba, touchedRegionHsv, Imgproc.COLOR_RGB2HSV_FULL);
-            //Imgproc.cvtColor(touchedRegionRgba, touchedRegionHsv, Imgproc.COLOR_RGB2HSV_FULL);
 
             mBlobColorHsv = Core.sumElems(touchedRegionHsv);
             int pointCount = touchedRect.width * touchedRect.height;

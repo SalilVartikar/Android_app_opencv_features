@@ -1,5 +1,6 @@
 package com.example.salil.project2;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class Main4Activity extends Main2Activity {
         Button nCanny = (Button) findViewById(R.id.normalCanny);
         Button nSobel = (Button) findViewById(R.id.normalSobel);
         Button edge = (Button) findViewById(R.id.cannySobel);
+        Button help = (Button) findViewById(R.id.help);
 
         nCanny.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -52,6 +54,15 @@ public class Main4Activity extends Main2Activity {
             public void onClick(View arg0) {
                 compare = 3;
                 displayImages();
+            }
+        });
+
+        help.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                Intent i = new Intent(Main4Activity.this,
+                        Main6Activity.class);
+                i.putExtra("fromActivity", 4);
+                startActivity(i);
             }
         });
     }

@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Project2</string>
+    <string name="normal_vs_fast">Normal vs Fast</string>
+    <string name="modified">Modified</string>
+    <string name="original">Original</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.salil.project2;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class Main5Activity extends Main2Activity {
         Button nFast = (Button) findViewById(R.id.normalFast);
         Button nOrb = (Button) findViewById(R.id.normalOrb);
         Button kp = (Button) findViewById(R.id.fastOrb);
+        Button help = (Button) findViewById(R.id.help);
 
         nFast.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -52,6 +54,15 @@ public class Main5Activity extends Main2Activity {
             public void onClick(View arg0) {
                 compare = 3;
                 displayImages();
+            }
+        });
+
+        help.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                Intent i = new Intent(Main5Activity.this,
+                        Main6Activity.class);
+                i.putExtra("fromActivity", 5);
+                startActivity(i);
             }
         });
     }
