@@ -29,8 +29,6 @@ public class Main3Activity extends Main2Activity {
     ImageView iv2;
     TextView tv1;
     TextView tv2;
-    public int compare;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,15 +45,15 @@ public class Main3Activity extends Main2Activity {
 
         brightness.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                compare = 1;
                 displayImages();
             }
         });
 
         keypoints.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                compare = 2;
-                displayImages();
+                Intent myInt = new Intent(Main3Activity.this,
+                        Main5Activity.class);
+                startActivity(myInt);
             }
         });
 
@@ -77,61 +75,23 @@ public class Main3Activity extends Main2Activity {
         Mat m = Imgcodecs.imread("/storage/emulated/0/Images/image.jpg");
         Imgproc.cvtColor(m, m, Imgproc.COLOR_BGR2RGB);
 
+        Bitmap bm = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(m, bm);
 
-        if(compare == 1) {
-            Bitmap bm = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(m, bm);
+        iv1.setImageBitmap(bm);
+        tv1.setText("Normal");
 
-            iv1.setImageBitmap(bm);
-            tv1.setText("Normal");
-
-            Mat mBright = new Mat();
-            try {
-                m.convertTo(mBright, -1, 1, 50);
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            Bitmap bmBright = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(mBright, bmBright);
-
-            iv2.setImageBitmap(bmBright);
-
-            tv2.setText("Bright");
+        Mat mBright = new Mat();
+        try {
+            m.convertTo(mBright, -1, 1, 50);
+        } catch (Exception e) {
+            System.out.println(e);
         }
 
-        else if(compare == 2) {
-            Mat mFAST = fastKp(m);
+        Bitmap bmBright = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(mBright, bmBright);
 
-            Bitmap bmFAST = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(mFAST, bmFAST);
-            iv1.setImageBitmap(bmFAST);
-            tv1.setText("FAST");
-
-
-            Mat mORB = orbKp(m);
-            Bitmap bmORB = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(mORB, bmORB);
-            iv2.setImageBitmap(bmORB);
-            tv2.setText("ORB");
-        }
-
-        else if(compare == 3) {
-//            Bitmap bm = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
-//            Utils.matToBitmap(m, bm);
-//            iv1.setImageBitmap(bm);
-//            tv1.setText("Normal");
-
-            Mat sobel = sobel(m);
-            Bitmap bm = Bitmap.createBitmap(sobel.cols(), sobel.rows(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(sobel, bm);
-            iv1.setImageBitmap(bm);
-            tv1.setText("Normal");
-
-            Mat mCanny = canny(m);
-            Bitmap bmCanny = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
-            Utils.matToBitmap(mCanny, bmCanny);
-            iv2.setImageBitmap(bmCanny);
-            tv2.setText("Canny");
-        }
+        iv2.setImageBitmap(bmBright);
+        tv2.setText("Bright");
     }
 }
