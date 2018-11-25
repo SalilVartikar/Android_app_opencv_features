@@ -25,6 +25,8 @@ import org.opencv.imgproc.Imgproc;
 import static org.opencv.core.CvType.CV_32F;
 
 public class Main3Activity extends Main2Activity {
+
+    /*Declaring variables*/
     ImageView iv1;
     ImageView iv2;
     TextView tv1;
@@ -39,16 +41,19 @@ public class Main3Activity extends Main2Activity {
         tv1 = (TextView) findViewById(R.id.text1);
         tv2 = (TextView) findViewById(R.id.text2);
 
+        /*Declare buttons*/
         Button keypoints = (Button) findViewById(R.id.Keypoints);
         Button brightness = (Button) findViewById(R.id.Brightness);
         Button edge = (Button) findViewById(R.id.Edge);
 
+        /*Brighness enhancement*/
         brightness.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 displayImages();
             }
         });
 
+        /*Go to keypoint detection activity*/
         keypoints.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 Intent myInt = new Intent(Main3Activity.this,
@@ -57,6 +62,7 @@ public class Main3Activity extends Main2Activity {
             }
         });
 
+        /*Go to edge detection activity*/
         edge.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 Intent myInt = new Intent(Main3Activity.this,
@@ -71,7 +77,10 @@ public class Main3Activity extends Main2Activity {
         super.onResume();
     }
 
+    /*Function to display images in the ImageViews*/
     public void displayImages() {
+
+        /*Reading image from storage*/
         Mat m = Imgcodecs.imread("/storage/emulated/0/Images/image.jpg");
         Imgproc.cvtColor(m, m, Imgproc.COLOR_BGR2RGB);
 
@@ -83,7 +92,7 @@ public class Main3Activity extends Main2Activity {
 
         Mat mBright = new Mat();
         try {
-            m.convertTo(mBright, -1, 1, 50);
+            m.convertTo(mBright, -1, 1, 75);
         } catch (Exception e) {
             System.out.println(e);
         }

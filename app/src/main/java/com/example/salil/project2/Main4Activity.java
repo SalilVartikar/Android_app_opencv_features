@@ -16,6 +16,7 @@ import org.opencv.imgproc.Imgproc;
 
 public class Main4Activity extends Main2Activity {
 
+    /*Declaring variables*/
     ImageView iv1;
     ImageView iv2;
     TextView tv1;
@@ -31,11 +32,13 @@ public class Main4Activity extends Main2Activity {
         tv1 = (TextView) findViewById(R.id.text1);
         tv2 = (TextView) findViewById(R.id.text2);
 
+        /*Declaring buttons*/
         Button nCanny = (Button) findViewById(R.id.normalCanny);
         Button nSobel = (Button) findViewById(R.id.normalSobel);
         Button edge = (Button) findViewById(R.id.cannySobel);
-        Button help = (Button) findViewById(R.id.help);
+        Button help1 = (Button) findViewById(R.id.help1);
 
+        /*Select comparison between Normal image and ouput of Canny edge detecton*/
         nCanny.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 compare = 1;
@@ -43,6 +46,7 @@ public class Main4Activity extends Main2Activity {
             }
         });
 
+        /*Select comparison between Normal image and ouput of Sobel edge detecton*/
         nSobel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 compare = 2;
@@ -50,6 +54,7 @@ public class Main4Activity extends Main2Activity {
             }
         });
 
+        /*Select comparison between Canny and Sobel edge detecton*/
         edge.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 compare = 3;
@@ -57,7 +62,8 @@ public class Main4Activity extends Main2Activity {
             }
         });
 
-        help.setOnClickListener(new View.OnClickListener() {
+        /*Select help for edge detection*/
+        help1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 Intent i = new Intent(Main4Activity.this,
                         Main6Activity.class);
@@ -73,10 +79,12 @@ public class Main4Activity extends Main2Activity {
     }
 
     public void displayImages() {
+
+        /*Read image from memory*/
         Mat m = Imgcodecs.imread("/storage/emulated/0/Images/image.jpg");
         Imgproc.cvtColor(m, m, Imgproc.COLOR_BGR2RGB);
 
-
+        /*Normal vs Canny*/
         if(compare == 1) {
             Bitmap bm = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(m, bm);
@@ -91,6 +99,7 @@ public class Main4Activity extends Main2Activity {
             tv2.setText("Canny");
         }
 
+        /*Normal vs Sobel*/
         else if(compare == 2) {
             Bitmap bm = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(m, bm);
@@ -106,6 +115,7 @@ public class Main4Activity extends Main2Activity {
             tv2.setText("Sobel");
         }
 
+        /*Canny vs Sobel*/
         else if(compare == 3) {
             Mat mCanny = canny(m);
             Bitmap bmCanny = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);

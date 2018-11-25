@@ -1,5 +1,6 @@
 package com.example.salil.project2;
 
+import android.annotation.SuppressLint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -7,6 +8,7 @@ import android.widget.TextView;
 public class Main6Activity extends AppCompatActivity {
 
     TextView tv;
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -14,11 +16,13 @@ public class Main6Activity extends AppCompatActivity {
 
         tv = (TextView) findViewById(R.id.text);
 
+        /*Get choice between keypoint detection or edge detection*/
         int from = getIntent().getIntExtra("fromActivity", 0);
 
+        /*Set text with help for Edge detection*/
         if(from == 4)
             tv.setText("Canny Edge Detector\n" +
-                    "Canny Edge Detection is a popular edge detection algorithm. It is a image processing method used to detect edges in an image while suppressing noise. It takes as input a gray scale image, and produces as output an image showing the positions of tracked intensity discontinuities.\n" +
+                    "Canny Edge Detection is a popular edge detection algorithm. It is an image processing method used to detect edges in an image while suppressing noise. It takes as input a gray scale image and produces as output an image showing the positions of tracked intensity discontinuities.\n" +
                     "\n" +
                     "For more information, visit :\n" +
                     "https://docs.opencv.org/3.1.0/da/d22/tutorial_py_canny.html\n" +
@@ -29,6 +33,8 @@ public class Main6Activity extends AppCompatActivity {
                     "\n" +
                     "For more information, visit :\n" +
                     "https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/sobel_derivatives/sobel_derivatives.html");
+
+        /*Set text with help for Keypoint detection*/
         else if(from == 5)
             tv.setText("FAST(Features from Accelerated Segment Test)\n" +
                     "FAST can be computed very quickly. It is a corner detection method, which could be used to extract feature points and later used to track and map objects in many computer vision tasks. Great for real-time visual tracking.\n" +

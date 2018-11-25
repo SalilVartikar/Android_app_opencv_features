@@ -16,6 +16,7 @@ import org.opencv.imgproc.Imgproc;
 
 public class Main5Activity extends Main2Activity {
 
+    /*Declaring variables*/
     ImageView iv1;
     ImageView iv2;
     TextView tv1;
@@ -31,11 +32,13 @@ public class Main5Activity extends Main2Activity {
         tv1 = (TextView) findViewById(R.id.text1);
         tv2 = (TextView) findViewById(R.id.text2);
 
+        /*Declaring buttons*/
         Button nFast = (Button) findViewById(R.id.normalFast);
         Button nOrb = (Button) findViewById(R.id.normalOrb);
         Button kp = (Button) findViewById(R.id.fastOrb);
         Button help = (Button) findViewById(R.id.help);
 
+        /*Select comparison of Normal image and FAST keypoint detection*/
         nFast.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 compare = 1;
@@ -43,6 +46,7 @@ public class Main5Activity extends Main2Activity {
             }
         });
 
+        /*Select comparison of Normal image and ORB keypoint detection*/
         nOrb.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 compare = 2;
@@ -50,6 +54,7 @@ public class Main5Activity extends Main2Activity {
             }
         });
 
+        /*Select comparison of FAST vs ORB*/
         kp.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 compare = 3;
@@ -57,6 +62,7 @@ public class Main5Activity extends Main2Activity {
             }
         });
 
+        /*Display help for keypoint detection*/
         help.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 Intent i = new Intent(Main5Activity.this,
@@ -73,10 +79,12 @@ public class Main5Activity extends Main2Activity {
     }
 
     public void displayImages() {
+
+        /*Read image from memory*/
         Mat m = Imgcodecs.imread("/storage/emulated/0/Images/image.jpg");
         Imgproc.cvtColor(m, m, Imgproc.COLOR_BGR2RGB);
 
-
+        /*Display normal vs FAST*/
         if(compare == 1) {
             Bitmap bm = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(m, bm);
@@ -91,6 +99,7 @@ public class Main5Activity extends Main2Activity {
             tv2.setText("Fast");
         }
 
+        /*Display normal vs ORB*/
         else if(compare == 2) {
             Bitmap bm = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(m, bm);
@@ -106,6 +115,7 @@ public class Main5Activity extends Main2Activity {
             tv2.setText("Orb");
         }
 
+        /*Display FAST vs ORB*/
         else if(compare == 3) {
             Mat mFast = fastKp(m);
             Bitmap bmFast = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);

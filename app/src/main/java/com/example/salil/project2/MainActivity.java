@@ -16,15 +16,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+        /*Request camera permission*/
+        //if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if(ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
                 requestPermissions(new String[]{Manifest.permission.CAMERA},9);
             }
-        }
+        //}
 
+        /*Declaring and initializing buttons*/
         Button front = (Button) findViewById(R.id.Front);
         Button back = (Button) findViewById(R.id.Back);
 
+        /*Use front camera*/
         front.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
 
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /*Use back camera*/
         back.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
 

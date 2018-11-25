@@ -1,6 +1,7 @@
 package com.example.salil.project2;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -29,6 +30,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfKeyPoint;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.features2d.FeatureDetector;
 import org.opencv.features2d.Features2d;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -37,8 +39,9 @@ import org.opencv.imgproc.Imgproc;
 import java.io.File;
 
 public class Main2Activity extends AppCompatActivity implements OnTouchListener, CvCameraViewListener2 {
-    private CameraBridgeViewBase mOpenCvCameraView;
 
+    /*Declaring variables*/
+    private CameraBridgeViewBase mOpenCvCameraView;
     public Mat mRGBA;
     public Mat mNormal;
     public int choice = 1;
@@ -49,6 +52,7 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
     private Scalar mBlobColorRgba;
     private Scalar mBlobColorHsv;
 
+    /*Loader function to load openCV*/
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
@@ -71,36 +75,40 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+        /*Requesting read and write permission*/
+        //if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},9);
             }
             if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},9);
             }
-        }
+        //}
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         touch_coordinates = (TextView) findViewById(R.id.touch_coordinates);
         touch_color = (TextView) findViewById(R.id.touch_color);
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.cam1);
 
+        /*Obtain and set camera choice*/
         int camChoice = getIntent().getIntExtra("camChoice", 0);
         mOpenCvCameraView.setCameraIndex(camChoice);
 
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
 
+        /*Declare buttons*/
         Button normal = (Button) findViewById(R.id.Normal);
         Button brightness = (Button) findViewById(R.id.Brightness);
         Button keypoints = (Button) findViewById(R.id.Keypoints);
         Button canny = (Button) findViewById(R.id.Canny);
         Button capture = (Button) findViewById(R.id.Capture);
 
+        /*Capture and store frame as .jpg image*/
         capture.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 Mat m1 = new Mat();
 
-                // Start NewActivity.class
+                /*Go to new activity*/
                 Intent myIntent = new Intent(Main2Activity.this,
                         Main3Activity.class);
 
@@ -121,24 +129,28 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
             }
         });
 
+        /*Display image without any changes*/
         normal.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 choice = 1;
             }
         });
 
+        /*Select brightness enhancement*/
         brightness.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 choice = 2;
             }
         });
 
+        /*Select detection and drawing keypoints*/
         keypoints.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 choice = 3;
             }
         });
 
+        /*Select edge detection*/
         canny.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 choice = 4;
@@ -171,9 +183,11 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
             mOpenCvCameraView.disableView();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 
+        /*Calculations for displaying color of the location touched*/
         if(choice == 1) {
             int cols = mRGBA.cols();
             int rows = mRGBA.rows();
@@ -193,7 +207,7 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
             if ((x < 0) || (y < 0) || (x > cols) || (y > rows))
                 return false;
 
-            touch_coordinates.setText("X: " + Double.valueOf(x) + ", Y: " + Double.valueOf(y));
+            touch_coordinates.setText("X: " + x + ", Y: " + y);
 
             Rect touchedRect = new Rect();
 
@@ -250,25 +264,32 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
 
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
+
+        /*Get camera frame*/
         mRGBA = inputFrame.rgba();
         mNormal = inputFrame.rgba();
-        //int choice = getIntent().getIntExtra("Choice", 0);
+
+        /*Switch case to select between different features*/
         switch(choice) {
+            /*Normal mode*/
             case 1:
                 return mRGBA;
 
+            /*Brighness enhancement*/
             case 2:
                 try {
-                    mRGBA.convertTo(mRGBA, -1, 1, 50);
+                    mRGBA.convertTo(mRGBA, -1, 1, 75);
                 } catch (Exception e) {
-                    System.out.println(e);
+                    System.out.println("ERROR");
                 }
                 break;
 
+            /*Fast keypoint detection*/
             case 3:
                 mRGBA = fastKp(mRGBA);
                 break;
 
+            /*Canny edge detection*/
             case 4:
                 mRGBA = canny(mRGBA);
                 break;
@@ -277,6 +298,7 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
         return mRGBA;
     }
 
+    /*Calculating sobel edge detection*/
     public Mat sobel(Mat m) {
         Mat gray = new Mat();
         Mat sobel = new Mat();
@@ -297,6 +319,7 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
         return sobel;
     }
 
+    /*Calculating canny edge detection*/
     public Mat canny(Mat m) {
         Mat canny = new Mat();
         Mat mGrey = new Mat(m.size(), CvType.CV_8UC1);
@@ -306,6 +329,7 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
         return canny;
     }
 
+    /*FAST keypoint detection*/
     public Mat fastKp(Mat m) {
         Mat fast = new Mat();
         Imgproc.cvtColor(m, m, Imgproc.COLOR_RGBA2RGB);
@@ -317,6 +341,7 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
         return fast;
     }
 
+    /*ORB keypoint detection*/
     public Mat orbKp(Mat m) {
         Mat mORB = new Mat();
         Imgproc.cvtColor(m, mORB, Imgproc.COLOR_RGBA2RGB);

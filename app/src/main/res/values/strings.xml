@@ -3,4 +3,9 @@
     <string name="normal_vs_fast">Normal vs Fast</string>
     <string name="modified">Modified</string>
     <string name="original">Original</string>
+    <string name="select_camera_to_be_used">Select Camera to be used</string>
+    <string name="front">Front</string>
+    <string name="normal_vs_orb">Normal vs Orb</string>
+    <string name="fast_vs_orb">Fast vs Orb</string>
+    <string name="help">Help</string>
 </resources>

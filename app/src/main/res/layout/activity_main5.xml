@@ -12,16 +12,16 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@id/strut"
-        android:layout_alignParentLeft="true"
+        android:layout_alignEnd="@id/strut"
+        android:layout_alignParentStart="true"
 
         android:id="@+id/img1"/>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/strut"
-        android:layout_alignParentRight="true"
+        android:layout_alignStart="@id/strut"
+        android:layout_alignParentEnd="true"
 
         android:id="@+id/img2"/>
 
@@ -55,17 +55,17 @@
         android:id="@+id/normalFast"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:text="@string/normal_vs_fast" />
+        android:text="Normal vs FAST" />
 
     <Button
         android:id="@+id/normalOrb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:text="Normal vs Orb" />
+        android:text="@string/normal_vs_orb" />
 
     <Button
         android:id="@+id/fastOrb"
@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Fast vs Orb" />
+        android:text="@string/fast_vs_orb" />
 
     <Button
         android:id="@+id/help"
@@ -81,6 +81,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Help" />
+        android:text="@string/help" />
 
 </RelativeLayout>
