@@ -99,6 +99,7 @@ public class Main3Activity extends Main2Activity {
         iv1.setImageBitmap(bm);
         tv1.setText("Normal");
 
+        /*Brightness Enhancement*/
         if(x == 1) {
             Mat mBright = new Mat();
             try {
@@ -110,14 +111,11 @@ public class Main3Activity extends Main2Activity {
             Bitmap bmBright = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(mBright, bmBright);
 
-            Bitmap bOutput;
-            Matrix matrix = new Matrix();
-            matrix.preScale(-1.0f, 1.0f);
-            bOutput = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
-
-            iv2.setImageBitmap(bOutput);
+            iv2.setImageBitmap(bmBright);
             tv2.setText("Bright");
         }
+
+        /*Horizontally flipping the image*/
         else if(x == 2){
             Bitmap bmBright = Bitmap.createBitmap(m.cols(), m.rows(), Bitmap.Config.ARGB_8888);
             Utils.matToBitmap(m, bmBright);
