@@ -75,4 +75,12 @@
         android:layout_centerHorizontal="true"
         android:text="Edge" />
 
+    <Button
+        android:id="@+id/Mirror"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:text="Mirror" />
+
 </RelativeLayout>

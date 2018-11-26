@@ -102,6 +102,7 @@ public class Main2Activity extends AppCompatActivity implements OnTouchListener,
         Button keypoints = (Button) findViewById(R.id.Keypoints);
         Button canny = (Button) findViewById(R.id.Canny);
         Button capture = (Button) findViewById(R.id.Capture);
+        Button mirror = (Button) findViewById(R.id.Mirror);
 
         /*Capture and store frame as .jpg image*/
         capture.setOnClickListener(new View.OnClickListener() {
